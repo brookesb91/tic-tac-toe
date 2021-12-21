@@ -17,8 +17,8 @@ export interface GameConfig {
 }
 
 export class Game {
-  private canvas: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D;
+  readonly canvas: HTMLCanvasElement;
+  readonly ctx: CanvasRenderingContext2D;
   private stopped: boolean = false;
   private time: number = 0;
 

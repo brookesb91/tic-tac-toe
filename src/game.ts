@@ -13,5 +13,5 @@ export const game = new Game({
   /**
    * Canvas width (px).
    */
-  width: 640,
+  width: 360,
 });
