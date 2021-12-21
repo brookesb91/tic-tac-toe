@@ -1,2 +1,2 @@
-export * from './start';
+export * from './board';
 export * from './win';

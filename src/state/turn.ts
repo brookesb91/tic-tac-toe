@@ -5,22 +5,21 @@ export class TurnState implements State {
   constructor(private player: Player, private position: Position) {}
 
   enter(): void {
-    // throw new Error('Method not implemented.');
+    // NOOP
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    console.log('Render');
     ctx.font = '50px Arial';
     ctx.textAlign = 'center';
     ctx.fillText(this.player, this.position.x, this.position.y);
   }
 
   update(frame: Frame): void {
-    // throw new Error('Method not implemented.');
+    // NOOP
   }
 
   exit(): void {
-    // throw new Error('Method not implemented.');
+    // NOOP
   }
 
   toString() {

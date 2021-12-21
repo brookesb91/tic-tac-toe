@@ -2,10 +2,11 @@ import { State, Frame } from '@core';
 import { game } from '@game';
 import { Player } from '@models';
 
+import { DrawState } from './draw';
 import { TurnState } from './turn';
 import { WinState } from './win';
 
-export class StartState implements State {
+export class BoardState implements State {
   readonly players: Player[] = ['x', 'o'];
   readonly moves: string[][];
   private player: Player;
@@ -25,22 +26,36 @@ export class StartState implements State {
     ctx.fillStyle = 'black';
 
     ctx.beginPath();
+
     ctx.moveTo(this.size, 0);
     ctx.lineTo(this.size, this.size * 3);
-    ctx.stroke();
 
-    ctx.beginPath();
     ctx.moveTo(this.size * 2, 0);
     ctx.lineTo(this.size * 2, this.size * 3);
+
+    ctx.moveTo(0, this.size);
+    ctx.lineTo(this.size * 3, this.size);
+
+    ctx.moveTo(0, this.size * 2);
+    ctx.lineTo(this.size * 3, this.size * 2);
+
     ctx.stroke();
   }
 
-  update(frame: Frame): void {}
+  update(frame: Frame): void {
+    // NOOP
+  }
 
-  exit(): void {}
+  exit(): void {
+    // NOOP
+  }
 
   enter(): void {
     game.canvas.addEventListener('click', this.handleClick);
+  }
+
+  hasAvailableMoves() {
+    return this.moves.flat().some((i) => i === null);
   }
 
   checkWinCondition() {
@@ -76,25 +91,34 @@ export class StartState implements State {
       })
     );
 
-    if (this.checkWinCondition()) {
-      // push win state
-      game.stack.push(new WinState(this.player));
-      game.canvas.removeEventListener('click', this.handleClick);
+    if (this.hasAvailableMoves()) {
+      if (this.checkWinCondition()) {
+        this.finish();
+        game.stack.push(new WinState(this.player));
 
-      // reset game on click
-      game.canvas.addEventListener(
-        'click',
-        () => {
-          game.stack.clear();
-          game.stack.push(new StartState());
-        },
-        { once: true }
-      );
+        // reset game on click
+      } else {
+        // next turn
+        this.player = this.player === 'x' ? 'o' : 'x';
+      }
     } else {
-      // next turn
-      this.player = this.player === 'x' ? 'o' : 'x';
+      // Draw
+      this.finish();
+      game.stack.push(new DrawState());
     }
   };
+
+  finish() {
+    game.canvas.removeEventListener('click', this.handleClick);
+    game.canvas.addEventListener(
+      'click',
+      () => {
+        game.stack.clear();
+        game.stack.push(new BoardState());
+      },
+      { once: true }
+    );
+  }
 
   toString(): string {
     return 'Start';
