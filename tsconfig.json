@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "target": "es2018",
+    "baseUrl": ".",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@core": ["./src/core"],
+      "@core/*": ["./src/core/*"],
+      "@state": ["src/state"],
+      "@state/*": ["src/state/*"],
+      "@models": ["src/models"],
+      "@models/*": ["src/models/*"],
+      "@stack": ["src/stack"],
+      "@game": ["src/game"]
+    }
+  },
+}
